@@ -1,0 +1,5 @@
+self.logger_hwnd = logger.add(f'{LOG_PATH}/{alias}.log',
+                                      filter=lambda record: alias in record["extra"],
+                                      format="{time} {level} {message}",
+                                      level="INFO", rotation=LOG_ROTATION)
+        self.task_logger = logger.bind(**self.alias)

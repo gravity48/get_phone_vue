@@ -1,0 +1,1 @@
+import{_ as r,e,f as o}from"./index.17c08fe6.js";const t={name:"ProgramDescription"};function a(n,c,s,p,i,_){return e(),o("h3",null,"ProgramDescription")}var f=r(t,[["render",a]]);export{f as default};

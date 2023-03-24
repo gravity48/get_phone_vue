@@ -1,0 +1,14 @@
+.header-panel{
+    position: static;
+}
+#save-result-block{
+    position: relative;
+    top: -38px;
+    font-size: 18px;
+    left: 44vw;
+}
+
+.td-doc{
+    max-width: 15vw;
+    overflow: hidden;
+}

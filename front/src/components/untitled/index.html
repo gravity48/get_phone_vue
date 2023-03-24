@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Dialog Window</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="/jquery-3.4.1.min.js" defer></script>
+	<script src="/selectFolderDialog.js" defer></script>
+</head>
+<body>
+<div>
+	<button type="button" id="dialog-btn" data-popup-id="folder-pickup">Открыть окно</button>
+</div>
+<div class="popup-overlay hidden" id="folder-pickup">
+	<div class="popup-content">
+		<div>
+			<div class="popup-content--header">
+				<p>Выберите папку</p>
+				<button type="button" class="close-button" title="Закрыть"></button>
+			</div>
+			<div class="folder-tree">
+				<div class="loader"><div></div></div>
+				<div class="folder-tree--panel"></div>
+			</div>
+			<div class="popup-content--buttons">
+				<button type="button">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

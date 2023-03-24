@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'index/def_head.html' %}
+    <link rel="stylesheet" href="{% static 'custom_auth/css/signin.css' %}">
+    <link rel="stylesheet" href="{% static 'index/css/blink_text.css' %}">
+    <script src="{% static 'index/js/script_new.js'%}"></script>
+    <script src="{% static 'custom_auth/js/auth_scripts.js' %}"></script>
+    <title>Auth</title>
+</head>
+<body>
+
+<main class="form-signin">
+    <form id="form-login" novalidate>
+        {% csrf_token %}
+        <span class="navbar-brand unselectable"><span class="fast-flicker">O</span>SA</span>
+        <div class="form-floating">
+            <input type="text" name="login" class="form-control " id="floatingInput" placeholder="name@example.com" required>
+            <label for="floatingInput">Login</label>
+            <div class="invalid-feedback">
+                field is required
+            </div>
+        </div>
+        <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+            <label for="floatingPassword">Password</label>
+            <div class="invalid-feedback">
+                field is required
+            </div>
+        </div>
+        <label style="display: none;">
+            <input type="text" class="hidden" name="event" value="login">
+        </label>
+        <div class="checkbox mb-3">
+            <label>
+                <input name="remember" type="checkbox" value="true"> Remember me
+            </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="button">Sign in</button>
+        <input type="text" style="display: none;" name="__all__" value="">
+        <div class="invalid-feedback">
+        </div>
+    </form>
+</main>
+</body>
+</html>

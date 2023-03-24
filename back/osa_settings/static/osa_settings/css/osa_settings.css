@@ -1,0 +1,35 @@
+.buttons:hover button:hover > i {
+    color: red;
+}
+
+tr {
+    position: relative;
+}
+
+.buttons {
+    opacity: 0;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: calc(100% - 2px);
+    color: #ff0000;
+    transition: opacity .3s ease-out, color .3s ease-out;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 1) 100%);
+    padding: .5rem 5px .5rem 45px;
+    cursor: pointer;
+}
+
+tbody > tr:hover .buttons {
+    opacity: 1;
+}
+
+.buttons > button {
+    background-color: transparent;
+    border: none;
+}
+
+.col-md-4{
+    float: left;
+}

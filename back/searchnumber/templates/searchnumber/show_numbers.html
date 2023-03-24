@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'index/def_head.html' %}
+    <link rel="stylesheet" href="{% static 'searchnumber/css/searchnumber.css' %}?1">
+    <script src="{% static 'searchnumber/js/searchnumber.js' %}"></script>
+    <title>Просмотр телефонов</title>
+</head>
+<header>
+    {% include 'index/navbar.html' %}
+</header>
+<body>
+<div class="preloader hidden">
+    <div></div>
+</div>
+<div class="row">
+    <div class="col">
+        <form id="search-form">
+            {% csrf_token %}
+            <div class="input-group mt-2">
+                <input name='search_string' type="text" class="form-control"
+                       placeholder="Введите номер телефона"
+                       aria-label="Search string for find numbers in database">
+                <button id="search-button" class="btn btn-outline-success" type="button">Search</button>
+                <button id="download-button" class="btn btn-outline-secondary" type="button"><i
+                        class="bi bi-download"></i></button>
+                <div class="invalid-feedback"></div>
+            </div>
+            <input id="download-hidden" name='files' type="file" style="display: none;">
+            <input name="event" type="text" value="search_number" style="display: none;" aria-label="Input event">
+        </form>
+    </div>
+</div>
+<div class="fatal-error-block hidden container-fluid">
+    <div class="row">
+        <div class="col">
+            <h5 id="error_txt"></h5>
+        </div>
+    </div>
+</div>
+<div id="block-result-view" class="row mt-2">
+    <div class="col">
+        <div class="custom-panel">
+            <div class="header-panel">
+                <h4>Результаты</h4>
+                <div id="save-result-block" class="{% if not page_nav %}hidden{% endif %}">
+                    <button class="btn btn-outline-light" data-download="{% url 'search_numbers:download_excel' %}"><i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+            </div>
+            <div class="body-panel">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Paragraph</th>
+                        <th scope="col">Document</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% include 'searchnumber/phone_view.html' %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-2" id="pagination-block"> {{ page_nav }}</div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

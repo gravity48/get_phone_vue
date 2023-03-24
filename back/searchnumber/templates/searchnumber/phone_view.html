@@ -1,0 +1,12 @@
+{% load  static %}
+{% for phone_view in phone_view_list %}
+    <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ phone_view.phone }}</td>
+        <td>{% for p in phone_view.paragraph %} ...
+            {{ p.p_before }}<b>{{ p.target }}</b>{{ p.p_after }} ... <br>
+        {% endfor %}</td>
+        <td class="td-doc"><a href="{{ phone_view.filepath }}">{{ phone_view.filename }}</a></td>
+        <td>{{ phone_view.date }}</td>
+    </tr>
+{% endfor %}

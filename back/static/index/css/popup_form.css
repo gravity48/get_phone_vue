@@ -1,0 +1,27 @@
+.popup-div{
+    display: none;
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 0;
+    min-width: 100%;
+    background-color: white;
+    padding: 5px;
+    z-index: 1;
+    border: 1px solid #86b7fe;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(134,183,254,0.7);
+}
+.popup-div ul {
+    max-height: 250px;
+    overflow-y: auto;
+    padding-left: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+}
+.popup-div ul li{
+    width: 50%;
+    margin: 3px 0;
+}

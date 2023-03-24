@@ -1,0 +1,1 @@
+celery -A get_phone_view worker -B -l INFO --autoscale=10,5 -n worker -Q celery,priority.high

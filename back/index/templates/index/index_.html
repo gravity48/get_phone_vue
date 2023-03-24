@@ -1,0 +1,266 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    {% include 'index/def_head.html' %}
+    <link rel="stylesheet" href="{% static 'index/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'index/css/popup_form.css' %}">
+    <script src="{% static 'index/js/index.js' %}"></script>
+    <script src="{% static 'index/js/popup_form.js' %}"></script>
+    <title>ИЗВЛЕЧЕНИЕ ТЕЛЕФОННЫХ НОМЕРОВ</title>
+</head>
+<header>
+    {% include 'index/navbar.html' %}
+</header>
+<body>
+
+<div id="block1" class="div-block container-fluid">
+    <div class="row row-title">
+        <div class="col">
+            <h7>Извлечение именнованных сущностей</h7>
+        </div>
+    </div>
+    <div class="row proj-div" id="row-file-path">
+        <form class="settings-form">
+            {% csrf_token %}
+            <input type="text" name="event" value="set_entity_proj" class="hidden">
+            <div class="col-12">
+                <div class="col-12 col-md-3 mb-3">
+                    <label for="data-folder" class="form-label">Папка для обработки</label>
+                    <input id="data-folder" name="data_folder" type="text" class="form-control"
+                           placeholder="{{ entity_settings.proj_settings.data_folder }}"
+                           required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-12 col-md-3 mb-3">
+                    <label for="log-name" class="form-label">Имя лог файла</label>
+                    <input id="log-name" type="text" name="log_name" class="form-control"
+                           placeholder="{{ entity_settings.proj_settings.log_name }}"
+                           required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-12 col-md-3 mb-3">
+                    <label for="log-name" class="form-label">Максимум времени</label>
+                    <input id="log-time" type="text" name="time_processing" class="form-control"
+                           placeholder="{{ entity_settings.proj_settings.time_processing }}"
+                           required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-12 col-md-3 mb-3">
+                    <label for="doc-date-input" class="form-label">Дата документов</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input class="auto-date-check form-check-input mt-0" type="checkbox" name="auto_date"
+                                   value="True"
+                                   aria-label="Checkbox for following date input"
+                                    {% if entity_settings.proj_settings.auto_date %} checked {% endif %}>
+                        </div>
+                        <input id="doc-date-input" type='text' name="doc_date" class='datepicker-here form-control'
+                               data-language='en' {% if entity_settings.proj_settings.auto_date %} disabled{% endif %}/>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div style="position: relative" class="col-12 col-md-3 mb-3">
+                    <label for="doc-extensions" class="form-label">Расширения документов</label>
+                    <input id="doc-extensions" type="text" class="form-control" readonly>
+                    <div id="popup-div" class="popup-div data-map">
+                        <ul>
+                            {% for file_extension in file_extensions %}
+                                <li>
+                                    <div class=" form-switch m-1">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="{{ file_extension.extension }}" value="True"
+                                                {% for key in entity_settings.proj_settings.data_array %}
+                                                    {% if key == file_extension.extension %}
+                                               checked
+                                                    {% endif %}
+                                                {% endfor %}>
+                                        <label class="form-check-label"
+                                               for="flexSwitchCheckDefault">{{ file_extension.extension }}</label>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check me-2">
+                    <input class="form-check-input" type="checkbox" name="check_processed_file" value="True"
+                           id="flexCheckDefault" {% if entity_settings.proj_settings.check_processed_file %}
+                           checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Check processed file
+                    </label>
+                </div>
+                <div class="form-check me-2">
+                    <input class="form-check-input" type="checkbox" name="sync_proj" value="True"
+                           id="flexCheckDefault" {% if entity_settings.proj_settings.sync_proj %}
+                           checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Only Tag
+                    </label>
+                </div>
+            </div>
+        </form>
+        <div class="col-12">
+            <div class="settings-block">
+                <button class="verification-btn btn btn-success" type="button" {% if entity_settings.is_run %}
+                        disabled {% endif %} >Проверка
+                </button>
+                <div id="connect2base" class="invalid-feedback">
+                    No Files
+                </div>
+            </div>
+            <div class="play-block">
+                <form>
+                    <input type="text" name="event" value="run_entity_proj" class="hidden">
+                    <button type="button" class="play-btn btn btn-outline-success m-2"
+                            disabled><i class="bi bi-collection-play"></i>
+                    </button>
+                    <button type="button" data-proj="entity_proj" class="stop-btn btn btn-outline-danger m-2"
+                            {% if not entity_settings.is_run %}
+                            disabled {% endif %}><i class="bi bi-stop"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="block2" class="div-block container-fluid">
+    <div class="row row-title">
+        <div class="col">
+            <h7>Переобучение выборки</h7>
+        </div>
+    </div>
+    <div class="row proj-div" id="row-file-path">
+        <form class="settings-form">
+            {% csrf_token %}
+            <input type="text" name="event" value="set_retraining_proj" class="hidden">
+            <div class="col-12">
+                <div style="position: relative" class="col-12 col-md-3 mb-3">
+                    <label for="doc-status" class="form-label">Статус документов</label>
+                    <input id="doc-status" type="text" class="form-control" readonly>
+                    <div id="popup-div-status" class="popup-div data-map">
+                        <ul>
+                            {% for status in doc_status %}
+                                <li>
+                                    <div class=" form-switch m-1">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="{{ status.status }}" value="True"
+                                                {% for key in retraining_settings.proj_settings.data_array %}
+                                                    {% if key == status.status %}
+                                               checked
+                                                    {% endif %}
+                                                {% endfor %}>
+                                        <label class="form-check-label"
+                                               for="flexSwitchCheckDefault">{{ status.status }}</label>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="log-name" class="form-label">Имя лог файла</label>
+                    <input id="log-name" type="text" name="log_name" class="form-control"
+                           placeholder="{{ retraining_settings.log_file }}"
+                           required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="log-name" class="form-label">Максимум времени</label>
+                    <input id="log-time" type="text" name="time_processing" class="form-control"
+                           placeholder="{{ retraining_settings.proj_settings.time_processing }}"
+                           required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="doc-date-retrain" class="form-label">Дата документов</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input class="auto-date-check form-check-input mt-0" type="checkbox" name="auto_date"
+                                   value="True"
+                                   aria-label="Checkbox for following date input"
+                                    {% if retraining_settings.proj_settings.auto_date %} checked {% endif %}>
+                        </div>
+                        <input id="doc-date-retrain" type='text' name="doc_date" class='datepicker-here form-control'
+                               data-language='en' {% if retraining_settings.proj_settings.auto_date %}
+                               disabled {% endif %}/>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="col-12 col-md-3">
+                    <label for="doc_id" class="form-label">ID Документа</label>
+                    <input id="doc_id" name="doc_id" type="number" class="form-control"
+                           placeholder="{{ retraining_settings.proj_settings.doc_id }}" required>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check me-2">
+                    <input class="form-check-input" type="checkbox" name="delete_non_existent" value="True"
+                           id="flexCheckDefault" {% if retraining_settings.proj_settings.delete_non_existent %}
+                           checked{% endif %} >
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Delete non existent
+                    </label>
+                </div>
+            </div>
+        </form>
+        <div class="col-12">
+            <div class="settings-block">
+                <button class="verification-btn btn btn-success" type="button" {% if retraining_settings.is_run %}
+                        disabled {% endif %} >Проверка
+                </button>
+                <div id="connect2base" class="invalid-feedback">
+                    No Files
+                </div>
+            </div>
+            <div class="play-block">
+                <form>
+                    <input type="text" name="event" value="run_retraining_proj" class="hidden">
+                    <button type="button" class="play-btn btn btn-outline-success m-2"
+                            disabled><i class="bi bi-collection-play"></i>
+                    </button>
+                    <button type="button" data-proj="retrain_proj" class="stop-btn btn btn-outline-danger m-2"
+                            {% if not retraining_settings.is_run %}
+                            disabled {% endif %}><i class="bi bi-stop"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="error-block" class="hidden container-fluid">
+    <div class="row">
+        <div class="col">
+            <h5 id="error_txt"></h5>
+        </div>
+    </div>
+</div>
+<div id="block4" class="div-block container-fluid">
+    <div class="row row-title">
+        <div class="col">
+            <h7>Логи</h7>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(() => {
+        let datepicker1 = new AirDatepicker('#doc-date-input', {
+            selectedDates: [new Date()]
+        });
+        let datepicker2 = new AirDatepicker('#doc-date-retrain', {
+            selectedDates: [new Date()]
+        });
+        let datepicker3 = new AirDatepicker('#doc-date-sync',{
+            selectedDates: [new Date()]
+        });
+    });
+</script>
+</body>
+</html>
