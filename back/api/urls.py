@@ -10,7 +10,9 @@ router.register(r'extensions', views.ExtensionsViewSet, 'Extensions')
 router.register(r'doc_status', views.DocStatusViewSet, 'DocStatus')
 router.register(r'proj_settings_list', views.ProjectSettingListView, 'ProjSettingsList')
 
-urlpatterns = [
+urlpatterns = router.urls
+
+generic_patterns = [
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('database/', views.DataBaseViewSet.as_view(), name='database'),
@@ -18,5 +20,6 @@ urlpatterns = [
     path('proj_control/', views.ProjectStartView.as_view(), name='proj_control'),
     path('phones/', views.PhonesView.as_view(), name='phones_view'),
     path('directories/', views.DirectoriesView.as_view(), name='directories'),
-    path('', include(router.urls)),
 ]
+
+urlpatterns += generic_patterns

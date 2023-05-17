@@ -13,7 +13,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DocumentStatus',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name='ID'
+                    ),
+                ),
                 ('status', models.CharField(max_length=100)),
             ],
         ),

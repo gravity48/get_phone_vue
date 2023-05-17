@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "back"
+version = "0.1.0"
+description = ""
+authors = ["gravity <gravity4849@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+django = "^4.2.1"
+djangorestframework = "^3.14.0"
+python-dotenv = "^1.0.0"
+django-filter = "^23.2"
+markdown = "^3.4.3"
+psycopg2-binary = "^2.9.6"
+djangorestframework-simplejwt = "^5.2.2"
+docx2txt = "^0.8"
+drf-spectacular = "^0.26.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+flake8 = "^6.0.0"
+
+[tool.black]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

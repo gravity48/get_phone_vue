@@ -1,4 +1,3 @@
-import re
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
@@ -6,34 +5,38 @@ from django.utils.translation import gettext_lazy as _
 
 
 class DocStatusModel(models.Model):
-    class StatusChoices(models.TextChoices):
-        success = 'success', _('Success')
-        timeout = 'timeout', _('Timeout')
-        unicode = 'unicode', _('Unicode')
-        unexpected = 'unexpected', _('Unexpected')
-        process = 'process', _('Process')
 
-    status_name = models.CharField(max_length=100, choices=StatusChoices.choices)
+    status_name = models.CharField(_("documents status name"), max_length=100)
 
     class Meta:
         db_table = 'doc_status'
 
 
 class DocumentsModel(models.Model):
-    status = models.ForeignKey(DocStatusModel, on_delete=models.CASCADE)
-    filename = models.CharField(max_length=500)
-    filepath = models.CharField(max_length=1000)
-    date = models.DateTimeField(blank=True, null=True)
+    status = models.ForeignKey(
+        DocStatusModel,
+        on_delete=models.CASCADE,
+        verbose_name=_("doc status"),
+    )
+    filename = models.CharField(_("filename"), max_length=500)
+    filepath = models.CharField(_("filepath"), max_length=1000)
+    date = models.DateTimeField(_("document date"), blank=True, null=True)
 
     class Meta:
         db_table = 'documents'
+        verbose_name = _('document')
+        verbose_name_plural = _('documents')
         indexes = [
             models.Index(fields=['date']),
         ]
 
 
 class ParagraphsModel(models.Model):
-    doc = models.ForeignKey(DocumentsModel, on_delete=models.CASCADE)
+    doc = models.ForeignKey(
+        DocumentsModel,
+        on_delete=models.CASCADE,
+        verbose_name=_(),
+    )
     text = models.TextField()
 
     class Meta:
@@ -47,10 +50,7 @@ class TelephonesModel(models.Model):
 
     class Meta:
         db_table = 'telephones'
-        indexes = [
-            models.Index(fields=['number_integer']),
-            models.Index(fields=['number'])
-        ]
+        indexes = [models.Index(fields=['number_integer']), models.Index(fields=['number'])]
 
 
 class SurnamesModel(models.Model):
@@ -69,8 +69,10 @@ class SurnamesModel(models.Model):
 
 
 class SettingsModel(models.Model):
-    db_ip = models.CharField(max_length=100,
-                             validators=[RegexValidator(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[1-9][0-9]{0,6}$')])
+    db_ip = models.CharField(
+        max_length=100,
+        validators=[RegexValidator(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[1-9][0-9]{0,6}$')],
+    )
     db_port = models.IntegerField()
     db_path = models.CharField(max_length=300)
     db_login = models.CharField(max_length=100)
@@ -81,16 +83,8 @@ class SettingsModel(models.Model):
 
 
 class DocExtensionModel(models.Model):
-    class ExtensionChoices(models.TextChoices):
-        doc = 'doc', _('Doc')
-        docx = 'docx', _('Docx')
-        xls = 'xls', _('Xls')
-        xlsx = 'xlsx', _('Xlsx')
-        txt = 'txt', _('Txt')
-        rtf = 'rtf', _('Rtf')
-        csv = 'csv', _('Csv')
 
-    extension = models.CharField(max_length=30, choices=ExtensionChoices.choices)
+    extension = models.CharField(max_length=30)
 
     class Meta:
         db_table = 'doc_extensions'
@@ -103,5 +97,3 @@ class ProjectsSettings(models.Model):
 
     class Meta:
         db_table = 'project_settings'
-
-

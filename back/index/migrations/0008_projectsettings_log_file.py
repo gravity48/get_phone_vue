@@ -14,6 +14,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='projectsettings',
             name='log_file',
-            field=models.FileField(blank=True, null=True, storage=django.core.files.storage.FileSystemStorage(location='/media/gravity/Data/PycharmProjects/get_phone_view_git/logfiles'), upload_to=''),
+            field=models.FileField(
+                blank=True,
+                null=True,
+                storage=django.core.files.storage.FileSystemStorage(
+                    location='/media/gravity/Data/PycharmProjects/get_phone_view_git/logfiles'
+                ),
+                upload_to='',
+            ),
         ),
     ]

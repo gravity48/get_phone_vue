@@ -14,6 +14,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='projectsettings',
             name='log_file',
-            field=models.FileField(blank=True, null=True, storage=django.core.files.storage.FileSystemStorage(location='/home/gravity/Work/PycharmProjects/get_phone_vue/back/logfiles'), upload_to=''),
+            field=models.FileField(
+                blank=True,
+                null=True,
+                storage=django.core.files.storage.FileSystemStorage(
+                    location='/home/gravity/Work/PycharmProjects/get_phone_vue/back/logfiles'
+                ),
+                upload_to='',
+            ),
         ),
     ]

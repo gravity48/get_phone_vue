@@ -3,10 +3,11 @@
 from django.db import migrations, models
 import django.db.models.deletion
 
+
 def combine_names(apps, schema_editor):
     # We can't import the Person model directly as it may be a newer
     # version than this migration expects. We use the historical version.
-    #models.QuestionHistory(numbers_json=numbers_list).save()
+    # models.QuestionHistory(numbers_json=numbers_list).save()
     ProjectType = apps.get_model("index", "ProjectType")
     ProjectType.objects.create(proj_name='extracting named entities')
 
@@ -21,7 +22,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProjectType',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name='ID'
+                    ),
+                ),
                 ('proj_name', models.TextField(unique=True)),
             ],
             options={
@@ -62,7 +68,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='projectsettings',
             name='proj_type',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='index.projecttype'),
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, to='index.projecttype'
+            ),
             preserve_default=False,
         ),
     ]

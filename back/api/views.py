@@ -1,22 +1,32 @@
 import copy
-import json
 import os
 import re
 import typing
+
+from django.conf import settings
+from django.contrib.auth.models import User
+
+from api.models import SettingsModel
+from api.serializers import (
+    MyTokenObtainPairSerializer,
+    UserSerializer,
+    DataBaseSettingsSerializer,
+    DataBaseSettingsUpdateSerializer,
+    DocExtensionsSerializer,
+    DocStatusSerializer,
+    ProjectSettingsSerializer,
+    ProjectSettingsUpdateSerializer,
+    PhoneViewSerializer,
+    FolderSerializer,
+)
 from index.models import UserRequestsList
-from collections import namedtuple, OrderedDict
-from django.shortcuts import render
+from collections import OrderedDict
 from django.db.models import Count
-from extraction_numbers.websocket_client import WebSocketClient
-from extraction_numbers.re_named_entities import regex_numbers_str
 from rest_framework import viewsets, permissions, status, generics
-from rest_framework.decorators import action
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api import models
-
-from .serializers import *
 
 
 # Create your views here.
@@ -30,6 +40,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
+
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
@@ -59,11 +70,9 @@ class DataBaseViewSet(generics.RetrieveUpdateAPIView):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = DataBaseSettingsUpdateSerializer(instance, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ExtensionsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -83,7 +92,9 @@ class ProjectSettingsView(generics.RetrieveUpdateAPIView):
         return models.ProjectsSettings.objects.get(proj_type=self.request.GET['proj'])
 
     def partial_update(self, request, *args, **kwargs):
-        serializer = ProjectSettingsUpdateSerializer(self.get_object(), data=request.data, partial=True)
+        serializer = ProjectSettingsUpdateSerializer(
+            self.get_object(), data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -92,11 +103,9 @@ class ProjectSettingsView(generics.RetrieveUpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         serializer = ProjectSettingsUpdateSerializer(self.get_object(), data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ProjectSettingListView(viewsets.ModelViewSet):
@@ -105,24 +114,19 @@ class ProjectSettingListView(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def partial_update(self, request, pk=None, *args, **kwargs):
         serializer = ProjectSettingsUpdateSerializer(self.get_object(), request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ProjectStartView(APIView):
-
     def post(self, request):
+        """
         try:
             action_ = request.data.pop('action')
             db_ = DataBaseSettingsSerializer(SettingsModel.objects.get(pk=1))
@@ -142,6 +146,7 @@ class ProjectStartView(APIView):
             return Response(data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        """
 
 
 class PhonesView(APIView):
@@ -157,43 +162,63 @@ class PhonesView(APIView):
                 number_clear = re.sub(r'\D', '', number)
                 if number_clear == phone:
                     if indent >= match.start():
-                        p_before = paragraph[:match.start()]
+                        p_before = paragraph[: match.start()]
                     else:
-                        p_before = paragraph[match.start() - indent:match.start()]
-                    target = paragraph[match.start():match.end()]
-                    p_after = paragraph[match.end():match.end() + indent]
-                    paragraph_view = OrderedDict({'p_after': p_after, 'target': target, 'p_before': p_before})
+                        p_before = paragraph[match.start() - indent : match.start()]
+                    target = paragraph[match.start() : match.end()]
+                    p_after = paragraph[match.end() : match.end() + indent]
+                    paragraph_view = OrderedDict(
+                        {'p_after': p_after, 'target': target, 'p_before': p_before}
+                    )
                     if paragraph_view not in new_paragraph:
                         new_paragraph.append(paragraph_view)
         return new_paragraph
 
     def _render_numbers(self, serializer_data):
+        """
         result = []
         regex_list = []
         for regex_numbers in regex_numbers_str:
             regex_list.append(re.compile(regex_numbers))
         for _ in serializer_data:
-            dict_ = OrderedDict({
-                'number': _['number'],
-                'paragraph': self._selection_numbers(regex_list, _['paragraph'], _['number'], 30),
-                'filename': _['filename'],
-                'filepath': _['filepath'].replace(settings.TRAINING_PATH, settings.MEDIA_URL),
-                'doc_date': _['doc_date'],
-            })
+            dict_ = OrderedDict(
+                {
+                    'number': _['number'],
+                    'paragraph': self._selection_numbers(
+                        regex_list, _['paragraph'], _['number'], 30
+                    ),
+                    'filename': _['filename'],
+                    'filepath': _['filepath'].replace(settings.TRAINING_PATH, settings.MEDIA_URL),
+                    'doc_date': _['doc_date'],
+                }
+            )
             result.append(dict_)
         return result
+        """
 
     @staticmethod
     def get_numbers(filter_):
-        return models.TelephonesModel.objects.values('number').filter(number_integer__in=filter_).annotate(
-            dcount=Count('number')).order_by()
+        return (
+            models.TelephonesModel.objects.values('number')
+            .filter(number_integer__in=filter_)
+            .annotate(dcount=Count('number'))
+            .order_by()
+        )
 
     @staticmethod
     def get_queryset_number(number, page_id):
-        queryset = models.TelephonesModel.objects.all().values('number', 'paragraph__text', 'paragraph__doc__filepath',
-                                                               'paragraph__doc__filename',
-                                                               'paragraph__doc__date').filter(
-            number_integer=int(number)).order_by('-paragraph__doc__date')
+        queryset = (
+            models.TelephonesModel.objects.all()
+            .values(
+                'number',
+                'paragraph__text',
+                'paragraph__doc__filepath',
+                'paragraph__doc__filename',
+                'paragraph__doc__date',
+            )
+            .filter(number_integer=int(number))
+            .order_by('-paragraph__doc__date')
+        )
         count_ = queryset.count()
         limit_ = page_id * 5 - 5
         offset = limit_ + 5
@@ -201,18 +226,21 @@ class PhonesView(APIView):
             count_ = count_ // 5 + 1
         else:
             count_ = count_ / 5
-        return queryset[limit_: offset], count_
+        return queryset[limit_:offset], count_
 
     def _filter2phones(self, filter_, query_params=None):
         phones = OrderedDict()
         numbers = self.get_numbers(filter_)
         for number in numbers:
             current_page = 1
-            if query_params is not None: current_page = query_params.get(number['number'], 1)
+            if query_params is not None:
+                current_page = query_params.get(number['number'], 1)
             queryset, count_ = self.get_queryset_number(number['number'], current_page)
             serializer = self.serializer_class(queryset, many=True)
             data = self._render_numbers(serializer.data)
-            phones[number['number']] = OrderedDict({'data': data, 'current_page': current_page, 'max_page': count_})
+            phones[number['number']] = OrderedDict(
+                {'data': data, 'current_page': current_page, 'max_page': count_}
+            )
         return phones
 
     def _new_question(self, request) -> OrderedDict:
@@ -220,7 +248,9 @@ class PhonesView(APIView):
         search_str = request.data['search_string']
         filter_ = request.data['validate_data']
         phones = self._filter2phones(filter_)
-        user_request = UserRequestsList(request=search_str, validate_data=filter_, user=request.user)
+        user_request = UserRequestsList(
+            request=search_str, validate_data=filter_, user=request.user
+        )
         user_request.save()
         context['phones'] = phones
         context['response_id'] = user_request.id
@@ -262,15 +292,20 @@ class PhonesView(APIView):
 
 
 class DirectoriesView(APIView):
-
     @staticmethod
     def _get_sub_directory(directory) -> typing.List[FolderSerializer]:
-        return [FolderSerializer(f.name, f.path + '/', None) for f in os.scandir(directory) if f.is_dir()]
+        return [
+            FolderSerializer(f.name, f.path + '/', None)
+            for f in os.scandir(directory)
+            if f.is_dir()
+        ]
 
     @staticmethod
     def get_root_directory():
         serializer = FolderSerializer('mnt', settings.TRAINING_PATH, None)
-        return [serializer._asdict(), ]
+        return [
+            serializer._asdict(),
+        ]
 
     def _get_sub_dir_action(self, request):
         folder = request.data['folder']

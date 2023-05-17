@@ -8,17 +8,31 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='ProjectSettings',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name='ID'
+                    ),
+                ),
                 ('server_name', models.TextField()),
                 ('path2base', models.TextField()),
-                ('path2log', models.FileField(blank=True, null=True, storage=django.core.files.storage.FileSystemStorage(location='/media/gravity/Data/PycharmProjects/get_phone_view_git/logfiles'), upload_to='')),
+                (
+                    'path2log',
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        storage=django.core.files.storage.FileSystemStorage(
+                            location='/media/gravity/Data/PycharmProjects/get_phone_view_git/logfiles'
+                        ),
+                        upload_to='',
+                    ),
+                ),
                 ('path2files', models.TextField(blank=True, null=True)),
                 ('is_run', models.BooleanField(default=False)),
                 ('project_id', models.TextField(default='')),

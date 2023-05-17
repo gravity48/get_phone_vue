@@ -21,8 +21,7 @@ class ProjectSettings(models.Model):
     proj_type = models.ForeignKey(ProjectType, on_delete=models.CASCADE)
     is_run = models.BooleanField(default=False)
     project_id = models.TextField(default='')
-    log_file = models.FileField(blank=True, null=True,
-                                storage=settings.DEFAULT_FILE_STORAGE)
+    log_file = models.FileField(blank=True, null=True, storage=settings.DEFAULT_FILE_STORAGE)
 
 
 class FileExtensions(models.Model):
@@ -43,6 +42,3 @@ class UserRequestsList(models.Model):
         if not self.id:
             self.date = datetime.now(pytz.utc)
         return super().save(*args, **kwargs)
-
-
-

@@ -1,1 +1,0 @@
-celery -A get_phone_view worker -B -l INFO -Q celery,priority.high
