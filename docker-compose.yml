@@ -1,0 +1,45 @@
+version: '3'
+services:
+  osa_extra_db:
+    image: postgres
+    restart: always
+    container_name: osa_extra_db
+    env_file:
+      - ./back/.env
+    volumes:
+      - osa_extra_db_vol:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+  back:
+    build: back/.
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    container_name: osa_extra_back
+    depends_on:
+      - osa_extra_db
+    networks:
+      - mynetwork
+  front:
+    build: front/.
+    command: npm start
+    container_name: osa_extra_front
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+  nginx:
+    build: nginx/.
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
+volumes:
+  osa_extra_db_vol:

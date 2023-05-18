@@ -8,11 +8,11 @@ DATABASE_ROUTERS = ['get_phone_view.routers.OsaExtraRouter', 'get_phone_view.rou
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ["SETTINGS_DB_NAME"],
-        'USER': os.environ["SETTINGS_DB_USER"],
-        'PASSWORD': os.environ["SETTINGS_DB_PASSWORD"],
-        'HOST': os.environ["SETTINGS_DB_HOST"],
-        'PORT': os.environ["SETTINGS_DB_PORT"],
+        'NAME': os.environ["POSTGRES_DB"],
+        'USER': os.environ["POSTGRES_USER"],
+        'PASSWORD': os.environ["POSTGRES_PASSWORD"],
+        'HOST': os.environ["POSTGRES_HOST"],
+        'PORT': os.environ["POSTGRES_PORT"],
     },
     'osa_extra': {
         'ENGINE': 'django.db.backends.postgresql',
