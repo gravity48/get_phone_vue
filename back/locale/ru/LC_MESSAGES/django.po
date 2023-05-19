@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-19 10:07+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: api/models.py:10
+msgid "documents status name"
+msgstr "Название статуса документа"
+
+#: api/models.py:16 api/models.py:17
+msgid "doc status"
+msgstr "Статус документа"
+
+#: api/models.py:80
+msgid "database ip"
+msgstr "IP"
+
+#: api/models.py:87
+msgid "db port"
+msgstr "Порт"
+
+#: api/models.py:90
+msgid "database path"
+msgstr "Путь к БД"
+
+#: api/models.py:94
+msgid "database login"
+msgstr "Логин"
+
+#: api/models.py:98
+msgid "database password"
+msgstr "Пароль"
+
+#: api/models.py:104 api/models.py:105 api/views/v1/settings.py:15
+#: api/views/v1/settings.py:20 api/views/v1/settings.py:51
+#: api/views/v1/settings.py:63
+msgid "settings"
+msgstr "Настройки"
+
+#: api/models.py:110
+#, fuzzy
+#| msgid "extension"
+msgid "extension name"
+msgstr "Расширения"
+
+#: api/models.py:116
+msgid "extension"
+msgstr "Расширения"
+
+#: api/models.py:117
+msgid "extensions"
+msgstr "Расширения"
+
+#: api/models.py:122
+msgid "Search proj"
+msgstr "Проект поиска"
+
+#: api/models.py:123
+msgid "Refresh proj"
+msgstr "Проект обновления"
+
+#: api/models.py:126
+msgid "proj type"
+msgstr "Тип проекта"
+
+#: api/models.py:132
+#, fuzzy
+#| msgid "Get settings data"
+msgid "proj options"
+msgstr "Получить настройки"
+
+#: api/models.py:136
+msgid "proj is started"
+msgstr "Проект запущен"
+
+#: api/models.py:140
+msgid "proj created at"
+msgstr "Дата создания проекта"
+
+#: api/models.py:148
+#, fuzzy
+#| msgid "Get settings data"
+msgid "project setting"
+msgstr "Получить настройки"
+
+#: api/models.py:149
+#, fuzzy
+#| msgid "Get settings data"
+msgid "projects settings"
+msgstr "Получить настройки"
+
+#: api/views/v1/jwt.py:8 api/views/v1/jwt.py:17
+msgid "jwt"
+msgstr "jwt"
+
+#: api/views/v1/settings.py:13
+msgid "Get settings data"
+msgstr "Получить настройки"
+
+#: api/views/v1/settings.py:18
+msgid "Update settings data"
+msgstr "Обновить настройки"
+
+#: api/views/v1/settings.py:49
+msgid "Get doc extensions"
+msgstr "Получить список поддерживаемых расширений"
+
+#: api/views/v1/settings.py:61
+msgid "Get status documents"
+msgstr "Получить статус документов"
+
+#, fuzzy
+#~| msgid "doc status"
+#~ msgid "Get doc status"
+#~ msgstr "Получить статус документов"
