@@ -1,74 +1,32 @@
-import copy
-import os
-import re
-import typing
+# import copy
+# import os
+# import re
+# import typing
+#
+# from django.conf import settings
+# from django.contrib.auth.models import User
+#
+# from api.models import SettingsModel
+# from api.serializers import (
+#     SettingsSerializer,
+#     SettingsUpdateSerializer,
+#     DocExtensionsSerializer,
+#     DocStatusSerializer,
+#     ProjectSettingsSerializer,
+#     ProjectSettingsUpdateSerializer,
+#     PhoneViewSerializer,
+#     FolderSerializer,
+# )
+# from index.models import UserRequestsList
+# from collections import OrderedDict
+# from django.db.models import Count
+# from rest_framework import viewsets, status, generics
+# from rest_framework.response import Response
+# from rest_framework.views import APIView
+# from api import models
 
-from django.conf import settings
-from django.contrib.auth.models import User
-
-from api.models import SettingsModel
-from api.serializers import (
-    SettingsSerializer,
-    SettingsUpdateSerializer,
-    DocExtensionsSerializer,
-    DocStatusSerializer,
-    ProjectSettingsSerializer,
-    ProjectSettingsUpdateSerializer,
-    PhoneViewSerializer,
-    FolderSerializer,
-)
-from index.models import UserRequestsList
-from collections import OrderedDict
-from django.db.models import Count
-from rest_framework import viewsets, status, generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from api import models
-
-
-#
-# class DocStatusViewSet(viewsets.ReadOnlyModelViewSet):
-#     queryset = models.DocStatusModel.objects.filter(id__lte=500).all()
-#     serializer_class = DocStatusSerializer
 #
 #
-# class ProjectSettingsView(generics.RetrieveUpdateAPIView):
-#     serializer_class = ProjectSettingsSerializer
-#
-#     def get_object(self):
-#         return models.ProjectsSettings.objects.get(proj_type=self.request.GET['proj'])
-#
-#     def partial_update(self, request, *args, **kwargs):
-#         serializer = ProjectSettingsUpdateSerializer(
-#             self.get_object(), data=request.data, partial=True
-#         )
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#     def update(self, request, *args, **kwargs):
-#         serializer = ProjectSettingsUpdateSerializer(self.get_object(), data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-#
-#
-# class ProjectSettingListView(viewsets.ModelViewSet):
-#     serializer_class = ProjectSettingsSerializer
-#     queryset = models.ProjectsSettings.objects.all().order_by('id')
-#
-#     def create(self, request, *args, **kwargs):
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-#
-#     def partial_update(self, request, pk=None, *args, **kwargs):
-#         serializer = ProjectSettingsUpdateSerializer(self.get_object(), request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
 #
 #
 # class ProjectStartView(APIView):

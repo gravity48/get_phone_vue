@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class BaseTestView:
     url: str
     auth_user: User
+    another_user: User
     databases = {"default", "osa_extra"}
 
     @classmethod
@@ -14,6 +15,11 @@ class BaseTestView:
             'user',
             'user@email.com',
             'user',
+        )
+        cls.another_user = User.objects.create_user(
+            'user1',
+            'user1@email.com',
+            'user1',
         )
 
     def setUp(self) -> None:

@@ -23,32 +23,7 @@
 #
 
 #
-#
-# class SettingsUpdateSerializer(serializers.Serializer):
-#     id = serializers.IntegerField(error_messages={})
-#     db_ip = serializers.CharField(
-#         max_length=100,
-#         validators=[RegexValidator(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[1-9][0-9]{0,6}$')],
-#         error_messages={},
-#     )
-#     db_port = serializers.IntegerField(error_messages={})
-#     db_path = serializers.CharField(max_length=300, error_messages={})
-#     db_login = serializers.CharField(max_length=100, error_messages={})
-#     db_password = serializers.CharField(max_length=100, error_messages={})
-#
-#     def validate(self, attrs):
-#         """
-#         if WebSocketClient().sync_database(attrs):
-#             return attrs
-#         raise serializers.ValidationError('Соединение к базе данных отсутствует')
-#         """
-#
-#     def update(self, instance, validated_data):
-#         for attr, value in validated_data.items():
-#             setattr(instance, attr, value)
-#         instance.save()
-#         return instance
-#
+
 #
 # class DocExtensionsSerializer(serializers.ModelSerializer):
 #     class Meta:
