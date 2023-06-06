@@ -16,6 +16,7 @@ psycopg2-binary = "^2.9.6"
 djangorestframework-simplejwt = "^5.2.2"
 docx2txt = "^0.8"
 drf-spectacular = "^0.26.2"
+faker = "^18.9.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"

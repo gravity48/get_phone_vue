@@ -36,5 +36,5 @@ urlpatterns = [
     path('settings/', include(settings_urls)),
     path('jwt/', include(jwt_urls)),
     path('project/', include(project_urls)),
-    path('phones/', include(view_urls)),
+    path('view/', include(view_urls)),
 ]

@@ -15,7 +15,7 @@ class ProjSettingsListSerializer(serializers.ModelSerializer):
 class ProjSettingsCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectsSettings
-        exclude = ('created_at',)
+        exclude = ('created_at', 'is_start')
 
 
 class ProjSettingsRetrieveSerializer(serializers.ModelSerializer):

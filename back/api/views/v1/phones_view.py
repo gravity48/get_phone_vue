@@ -1,11 +1,8 @@
-from collections import OrderedDict
-
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -22,7 +19,7 @@ from services.phones.render import PhonesRender
 
 @extend_schema_view(
     post=extend_schema(
-        description=_('get numbers'),
+        description=_('get numbers list'),
         request=PhoneSerializer(many=True),
         responses={200: UserResponseSerializer(many=True)},
         tags=[
@@ -44,6 +41,25 @@ class PhonesAPIView(APIView):
         return Response(data=context, status=status.HTTP_200_OK)
 
 
+@extend_schema_view(
+    post=extend_schema(
+        description=_('get number info by page'),
+        request=PhoneSerializer,
+        responses={200: PhoneResponseSerializer(many=True)},
+        tags=[
+            _('view'),
+        ],
+    ),
+    get=extend_schema(
+        description=_('get data from request'),
+        responses={
+            200: UserResponseSerializer(many=True),
+        },
+        tags=[
+            _('view'),
+        ],
+    ),
+)
 class PhonesDetailView(APIView):
     paginator_class = PhonePaginator()
 

@@ -25,7 +25,7 @@ class SettingsTest(BaseTestView, TestCase):
         )
         paragraph = ParagraphsModel.objects.create(
             doc=doc,
-            text='paragraph text',
+            text='paragraph 9835689823 text',
         )
         phones_list = []
         for item in range(100):
@@ -66,7 +66,6 @@ class SettingsTest(BaseTestView, TestCase):
         request = self.client.post(f'{self.url}{request_instance.id}/', valid_data)
         self.assertEqual(request.status_code, 200)
         request_instance = UserRequestsList.objects.get(pk=request_instance.id)
-        print(request_instance.filter_params)
         self.client.credentials(HTTP_AUTHORIZATION=self.get_token(self.another_user))
         valid_data = {
             'number': '9835689823',
@@ -75,4 +74,3 @@ class SettingsTest(BaseTestView, TestCase):
         request = self.client.post(f'{self.url}{request_instance.id}/', valid_data)
         self.assertEqual(request.status_code, 200)
         request_instance = UserRequestsList.objects.get(pk=request_instance.id)
-        print(request_instance.filter_params)

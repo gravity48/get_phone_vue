@@ -1,4 +1,5 @@
 import uuid
+from typing import Tuple
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -6,6 +7,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from api.validators import ip_validator
+from base.regex import NumberSelection
+from services.regular_expression import FindRegex
 
 
 class DocStatusModel(models.Model):
@@ -80,8 +83,8 @@ class TelephonesModel(models.Model):
         return self.paragraph.doc.filepath
 
     @property
-    def text(self):
-        return self.paragraph.text
+    def text(self) -> NumberSelection:
+        return FindRegex().find_phone(self.paragraph.text, self.number)[1]
 
     class Meta:
         db_table = 'telephones'

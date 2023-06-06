@@ -28,11 +28,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api.apps.ApiConfig',
     'django_filters',
     'rest_framework',
     'drf_spectacular',
+    'api',
     'index',
+    'services',
 ]
 
 MIDDLEWARE = [
